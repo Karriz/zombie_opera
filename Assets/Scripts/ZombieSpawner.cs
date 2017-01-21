@@ -90,7 +90,7 @@ public class ZombieSpawner : MonoBehaviour {
             this.activeZombies.Add (zombie);
 		}
         this.timeCounter += Time.deltaTime;
-        if (spawnFrequency > 2f) spawnFrequency -= Time.deltaTime * 0.1f;
+        if (spawnFrequency > 2f) spawnFrequency -= Time.deltaTime * 0.06f;
 	}
 
 	public void DeactivateZombie( GameObject zombie_ ) {

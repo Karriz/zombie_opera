@@ -7,6 +7,11 @@ public class Frequency : MonoBehaviour {
     public GameObject low, high, mid;
 	// Use this for initialization
 
+    void Start ()
+    {
+        ad.pitch = 1f;
+    }
+
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -24,24 +29,26 @@ public class Frequency : MonoBehaviour {
             high.SetActive(false);
             mid.SetActive(false);
         }
-        var D = Input.GetAxis("Mouse ScrollWheel")*2;
+        var D = Input.GetAxis("Mouse ScrollWheel")*0.2f;
         ad.pitch -= D;
+
+        ad.pitch = Mathf.Clamp(ad.pitch, 0.5f, 3f);
 
         if (ad.isPlaying)
         {
-            if (ad.pitch <= -3)
+            if (ad.pitch <= 1)
             {
                 low.SetActive(true);
                 high.SetActive(false);
                 mid.SetActive(false);
             }
-            else if (ad.pitch > -3 && ad.pitch <= 3)
+            else if (ad.pitch > 1 && ad.pitch <= 2)
             {
                 low.SetActive(false);
                 high.SetActive(false);
                 mid.SetActive(true);
             }
-            else if (ad.pitch > 3)
+            else if (ad.pitch > 2)
             {
                 low.SetActive(false);
                 high.SetActive(true);
