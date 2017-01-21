@@ -14,6 +14,8 @@ public class RagdollController : MonoBehaviour {
     private float timer = 0f;
 
     public bool headExploded = false;
+    public bool dead = false;
+
 	// Use this for initialization
 	void Start () {
         headExplosion = transform.Find("Body/HeadExplosion").GetComponent<ParticleSystem>();
@@ -79,10 +81,27 @@ public class RagdollController : MonoBehaviour {
 
             animator.Stop();
 
-            body.AddRelativeForce(new Vector3(-5f, 20f, 0f), ForceMode2D.Impulse);
+            body.AddRelativeForce(new Vector3(-5f, 0f, 0f), ForceMode2D.Impulse);
             head.SetActive(false);
             headExplosion.Play();
             headExploded = true;
+        }
+    }
+
+    public void PlayerDead()
+    {
+        if (!dead)
+        {
+            for (int i = 0; i < rigidBodies.Length; i++)
+            {
+                rigidBodies[i].isKinematic = false;
+            }
+
+            animator.Stop();
+
+            body.AddRelativeForce(new Vector3(-5f, 0f, 0f), ForceMode2D.Impulse);
+            headExplosion.Play();
+            dead = true;
         }
     }
 }

@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mid
-  - Low
   - High
+  - Low
   layers:
   - Default
   - TransparentFX
