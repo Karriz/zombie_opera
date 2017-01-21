@@ -7,13 +7,15 @@ public class ZombieSpawner : MonoBehaviour {
 	public int bufferSize = 16;
 	public float spawnFrequency = 2.0f;
 
-	private float timeCounter = 0.0f;
+	private float timeCounter = 0f;
 	private ArrayList activeZombies = new ArrayList();
 	private Stack inactiveZombies = new Stack();
 
 	// Use this for initialization
 	void Start () {
-		for (int i = 0; i < this.bufferSize; i++) {
+        timeCounter = spawnFrequency;
+
+        for (int i = 0; i < this.bufferSize; i++) {
 			GameObject zombie = GameObject.Instantiate (this.zombiePrefab);
             ZombieDestroyer zombieDestroyer = zombie.GetComponent<ZombieDestroyer>();
 
@@ -42,7 +44,7 @@ public class ZombieSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.timeCounter += Time.deltaTime;
+		
 		if (this.spawnFrequency <= this.timeCounter) {
 			this.timeCounter = 0.0f;
 			GameObject zombie;
@@ -87,6 +89,8 @@ public class ZombieSpawner : MonoBehaviour {
             zombie.GetComponent<Collider2D>().isTrigger = false;
             this.activeZombies.Add (zombie);
 		}
+        this.timeCounter += Time.deltaTime;
+        if (spawnFrequency > 2f) spawnFrequency -= Time.deltaTime * 0.1f;
 	}
 
 	public void DeactivateZombie( GameObject zombie_ ) {

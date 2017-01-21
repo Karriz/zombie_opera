@@ -121,7 +121,7 @@ public class RagdollController : MonoBehaviour {
 
             isWalking = false;
 
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, 8f);
         }
     }
 
