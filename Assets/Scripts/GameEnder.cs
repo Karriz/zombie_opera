@@ -10,7 +10,7 @@ public class GameEnder : MonoBehaviour {
 
     void Start()
     {
-        button = GameObject.Find("Button");
+        button = GameObject.Find("GameOver");
     }
 
 	void OnCollisionEnter2D (Collision2D other_ ){

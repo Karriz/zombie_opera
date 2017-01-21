@@ -6,7 +6,7 @@ public class Restart : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GameObject.Find("Button").SetActive(false);
+        GameObject.Find("GameOver").SetActive(false);
 	}
 	
 	// Update is called once per frame

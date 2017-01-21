@@ -32,7 +32,7 @@ public class Frequency : MonoBehaviour {
         var D = Input.GetAxis("Mouse ScrollWheel")*0.2f;
         ad.pitch -= D;
 
-        ad.pitch = Mathf.Clamp(ad.pitch, 0.5f, 3f);
+        ad.pitch = Mathf.Clamp(ad.pitch, 0.5f, 2f);
 
         if (ad.isPlaying)
         {
@@ -42,13 +42,13 @@ public class Frequency : MonoBehaviour {
                 high.SetActive(false);
                 mid.SetActive(false);
             }
-            else if (ad.pitch > 1 && ad.pitch <= 2)
+            else if (ad.pitch > 1 && ad.pitch <= 1.4f)
             {
                 low.SetActive(false);
                 high.SetActive(false);
                 mid.SetActive(true);
             }
-            else if (ad.pitch > 2)
+            else if (ad.pitch > 1.4f)
             {
                 low.SetActive(false);
                 high.SetActive(true);
