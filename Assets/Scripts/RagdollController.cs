@@ -8,83 +8,120 @@ public class RagdollController : MonoBehaviour {
     private Rigidbody2D body;
 
     private Rigidbody2D[] rigidBodies;
+    private BoxCollider2D[] boxColliders;
 
     private Animator animator;
-
-    private float timer = 0f;
 
     public bool headExploded = false;
     public bool dead = false;
 
+    public bool isWalking = false;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         headExplosion = transform.Find("Body/HeadExplosion").GetComponent<ParticleSystem>();
         head = transform.Find("Head").gameObject;
         body = transform.Find("Body").GetComponent<Rigidbody2D>();
 
         rigidBodies = transform.GetComponentsInChildren<Rigidbody2D>();
 
+        boxColliders = transform.GetComponentsInChildren<BoxCollider2D>();
+
         animator = transform.GetComponent<Animator>();
 
-        StartZombieWalkAnimation();
+        StartIdleAnimation();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        timer += Time.deltaTime;
-
-        if (timer > 4f)
-        {
-            ExplodeHead();
-        }
-	}
+        
+    }
 
     public void StartWalkAnimation()
     {
-        for (int i=0;i<rigidBodies.Length;i++)
+        gameObject.GetComponent<Collider2D>().isTrigger = false;
+        for (int i = 0; i < boxColliders.Length; i++)
         {
-            rigidBodies[i].isKinematic = true;
-
-            animator.Play("Walking");
+            if (boxColliders[i] != null)
+            {
+                boxColliders[i].isTrigger = true;
+            }
         }
+        animator.Play("Walking");
+
+        isWalking = true;
     }
 
     public void StartZombieWalkAnimation()
     {
-        for (int i = 0; i < rigidBodies.Length; i++)
-        {
-            head.SetActive(true);
-            rigidBodies[i].isKinematic = true;
+        gameObject.GetComponent<Collider2D>().isTrigger = false;
 
-            animator.Play("Zombie_Walking");
+        for (int i = 0; i < boxColliders.Length; i++)
+        {
+            if (boxColliders[i] != null)
+            {
+                boxColliders[i].isTrigger = true;
+            }
         }
+
+        head.SetActive(true);
+        animator.Play("Zombie_Walking");
+
+        isWalking = true;
     }
 
     public void StartIdleAnimation()
     {
-        for (int i = 0; i < rigidBodies.Length; i++)
+        for (int i = 0; i < boxColliders.Length; i++)
         {
-            rigidBodies[i].isKinematic = true;
-
-            animator.Play("Idle");
+            if (boxColliders[i] != null)
+            {
+                boxColliders[i].isTrigger = true;
+            }
         }
+
+        animator.Play("Idle");
+
+        isWalking = false;
     }
 
     public void ExplodeHead()
     {
         if (!headExploded)
         {
-            for (int i = 0; i < rigidBodies.Length; i++)
-            {
-                rigidBodies[i].isKinematic = false;
-            }
 
             animator.Stop();
 
-            body.AddRelativeForce(new Vector3(-5f, 0f, 0f), ForceMode2D.Impulse);
             head.SetActive(false);
+
+            Destroy(head);
+
+            for (int i = 0; i < boxColliders.Length; i++)
+            {
+                if (boxColliders[i] != null)
+                {
+                    boxColliders[i].transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                    boxColliders[i].isTrigger = false;
+                    //boxColliders[i].gameObject.AddComponent<Rigidbody2D>();
+                }
+            }
+
+            body.AddRelativeForce(new Vector3(transform.localScale.x*-50f, 0f, 0f), ForceMode2D.Impulse);
+
+
+            /*transform.Find("Head").SetParent(null);
+            transform.Find("Body").SetParent(null);
+            transform.Find("Left_Arm").SetParent(null);
+            transform.Find("Right_Arm").SetParent(null);
+            transform.Find("Left_Leg").SetParent(null);
+            transform.Find("Right_Leg").SetParent(null);*/
+
             headExplosion.Play();
             headExploded = true;
+
+            isWalking = false;
+
+            Destroy(gameObject, 3f);
         }
     }
 
@@ -92,16 +129,27 @@ public class RagdollController : MonoBehaviour {
     {
         if (!dead)
         {
-            for (int i = 0; i < rigidBodies.Length; i++)
-            {
-                rigidBodies[i].isKinematic = false;
-            }
+
+            
 
             animator.Stop();
 
-            body.AddRelativeForce(new Vector3(-5f, 0f, 0f), ForceMode2D.Impulse);
+            for (int i = 0; i < boxColliders.Length; i++)
+            {
+                if (boxColliders[i] != null && boxColliders[i].tag != "Low" && boxColliders[i].tag != "Mid" && boxColliders[i].tag != "High")
+                {
+                    boxColliders[i].transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                    boxColliders[i].isTrigger = false;
+                    //boxColliders[i].gameObject.AddComponent<Rigidbody2D>();
+                }
+
+            }
+
+            body.AddRelativeForce(new Vector3(transform.localScale.x * 50f, 0f, 0f), ForceMode2D.Impulse);
+
             headExplosion.Play();
             dead = true;
+            isWalking = false;
         }
     }
 }

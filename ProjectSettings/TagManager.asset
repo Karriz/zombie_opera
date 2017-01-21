@@ -7,6 +7,7 @@ TagManager:
   - Mid
   - High
   - Low
+  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Zombie
   - 
   - 
   - 

@@ -12,27 +12,41 @@ public class Frequency : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space)) {
             ad.Play();
         }
-      if (Input.GetKeyUp(KeyCode.Space)){
+        else if (Input.GetKeyUp(KeyCode.Space)){
             ad.Stop();
+            low.SetActive(false);
+            high.SetActive(false);
+            mid.SetActive(false);
+        }
+        else if (!ad.isPlaying)
+        {
+            low.SetActive(false);
+            high.SetActive(false);
+            mid.SetActive(false);
         }
         var D = Input.GetAxis("Mouse ScrollWheel")*2;
         ad.pitch -= D;
-        if (ad.pitch <= -3) {
-            low.SetActive(true);
-            high.SetActive(false);
-            mid.SetActive(false);
-        }
-        else if (ad.pitch > -3 && ad.pitch <= 3)
+
+        if (ad.isPlaying)
         {
-            low.SetActive(false);
-            high.SetActive(false);
-            mid.SetActive(true);
-        }
-        else if (ad.pitch > 3)
-        {
-            low.SetActive(false);
-            high.SetActive(true);
-            mid.SetActive(false);
+            if (ad.pitch <= -3)
+            {
+                low.SetActive(true);
+                high.SetActive(false);
+                mid.SetActive(false);
+            }
+            else if (ad.pitch > -3 && ad.pitch <= 3)
+            {
+                low.SetActive(false);
+                high.SetActive(false);
+                mid.SetActive(true);
+            }
+            else if (ad.pitch > 3)
+            {
+                low.SetActive(false);
+                high.SetActive(true);
+                mid.SetActive(false);
+            }
         }
     }
 }
